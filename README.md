@@ -1,7 +1,6 @@
-# LLM_Middleware ARCHITECTURE
+# LLM_Middleware
 
-<img width="165" height="150" alt="llm_middleware_architecture" src="https://github.com/user-attachments/assets/66e5d98a-f9ba-4f05-bf2e-0da95f9870ec" />
-
+<img width="165" height="150" alt="llm_middleware_architecture" src="https://github.com/user-attachments/assets/ca6360ea-370e-41d8-a1c7-a0254a25ed6f" />
 <svg width="100%" viewBox="0 0 680 620" role="img" style="" xmlns="http://www.w3.org/2000/svg">
   <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">LLM Middleware Architecture</title>
   <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Architecture diagram showing request flow from app clients through FastAPI gateway, middleware layers, and out to LLM providers, with Redis and PostgreSQL as supporting infrastructure.</desc>
