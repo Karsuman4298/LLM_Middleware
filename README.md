@@ -1,4 +1,4 @@
-<img width="176" height="150" alt="redis_postgres_explained" src="https://github.com/user-attachments/assets/c438e68f-86ea-4a8a-a298-bf379f264783" />
+<img width="1408" height="768" alt="redis_postgres_explained" src="https://github.com/user-attachments/assets/c438e68f-86ea-4a8a-a298-bf379f264783" />
 # LLM_Middleware
 
 <img width="1408" height="768" alt="image_f558576e" src="https://github.com/user-attachments/assets/b719fe11-ef7c-4afe-8dce-435736d13ae8" />
