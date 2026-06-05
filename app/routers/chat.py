@@ -1,5 +1,4 @@
-# app/routers/chat.py
-from fastapi import APIRouter, HTTPException, Header, Depends
+from fastapi import APIRouter, HTTPException, Header
 from pydantic import BaseModel
 from redis.asyncio import Redis
 from app.providers.huggingface import HuggingFaceProvider
@@ -27,29 +26,39 @@ async def chat(
     if not allowed:
         raise HTTPException(429, detail="Rate limit exceeded. Try again in 60s.")
 
-    # Fallback chain across available models
-    models_to_try = [req.model] if req.model else provider.models
-    last_error = None
+    # always try all working models as fallback chain
+    # if user requested a specific model, try it first, then fall back
+    models_to_try = []
+    if req.model and req.model not in provider.models:
+        models_to_try.append(req.model)       # try requested model first
+    models_to_try.extend(provider.models)     # then fall back to known good ones
 
+    last_error = None
     for model in models_to_try:
         try:
             result = await provider.complete(req.messages, model, req.max_tokens)
             await log_request(api_key=x_api_key, result=result, status="success")
             return {
-                "text":          result["text"],
-                "model":         result["model"],
+                "text":                 result["text"],
+                "model":                result["model"],
                 "usage": {
-                    "input_tokens":  result["input_tokens"],
-                    "output_tokens": result["output_tokens"],
+                    "input_tokens":     result["input_tokens"],
+                    "output_tokens":    result["output_tokens"],
                 },
-                "latency_ms":    round(result["latency_ms"], 2),
+                "latency_ms":           round(result["latency_ms"], 2),
                 "rate_limit_remaining": remaining,
+                "fallback_used":        model != req.model if req.model else False,
             }
         except Exception as e:
             last_error = str(e)
-            await log_request(api_key=x_api_key, result={"model": model, "provider": "huggingface",
-                "input_tokens": 0, "output_tokens": 0, "latency_ms": 0,
-                "prompt_hash": ""}, status="error", error=last_error)
-            continue
+            await log_request(
+                api_key=x_api_key,
+                result={"model": model, "provider": "huggingface",
+                        "input_tokens": 0, "output_tokens": 0,
+                        "latency_ms": 0, "prompt_hash": ""},
+                status="error",
+                error=last_error
+            )
+            continue  # try next model
 
     raise HTTPException(503, detail=f"All models failed. Last error: {last_error}")
